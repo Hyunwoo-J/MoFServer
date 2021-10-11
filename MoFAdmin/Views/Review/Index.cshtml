@@ -1,0 +1,89 @@
+@model IEnumerable<MoFModel.Entities.Review>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MovieTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PosterPath)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BackdropPath)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RealeaseDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StarPoint)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ViewingDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MovieTheater)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Person)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Memo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdateDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MovieTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PosterPath)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BackdropPath)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RealeaseDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StarPoint)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ViewingDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MovieTheater.BasicOrganization)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Person)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Memo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdateDate)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ReviewId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ReviewId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ReviewId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
