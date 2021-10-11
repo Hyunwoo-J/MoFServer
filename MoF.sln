@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoFAdmin", "MoFAdmin\MoFAdm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoFApi", "MoFApi\MoFApi.csproj", "{71AE550D-7323-4566-9D3B-8016A2BABD4F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoFBulkInsert", "MoFBulkInsert\MoFBulkInsert.csproj", "{AEEBBBFA-41BC-40BB-9373-94D89C079AB9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{71AE550D-7323-4566-9D3B-8016A2BABD4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71AE550D-7323-4566-9D3B-8016A2BABD4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71AE550D-7323-4566-9D3B-8016A2BABD4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEEBBBFA-41BC-40BB-9373-94D89C079AB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEEBBBFA-41BC-40BB-9373-94D89C079AB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEEBBBFA-41BC-40BB-9373-94D89C079AB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEEBBBFA-41BC-40BB-9373-94D89C079AB9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
