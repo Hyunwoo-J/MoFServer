@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,10 +11,11 @@ using Microsoft.EntityFrameworkCore;
 using MoFModel.Contexts;
 using MoFModel.Entities;
 using MoFModel.Models;
+using MoFModel.Services;
 
 namespace MoFApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ReviewApiController : ControllerBase
     {
@@ -22,14 +26,21 @@ namespace MoFApi.Controllers
             _context = context;
         }
 
-        // GET: api/ReviewApi
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Review>>> GetReview()
         {
             return await _context.Review.ToListAsync();
         }
 
-        // GET: api/ReviewApi/5
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Review>> GetReview(int id)
         {
@@ -75,16 +86,26 @@ namespace MoFApi.Controllers
             return NoContent();
         }
 
-        // POST: api/ReviewApi
+        // POST: api/Review
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Review>> PostReview(Review review)
+        public async Task<ActionResult<Review>> PostMovieTheater(Review review)
         {
-            _context.Review.Add(review);
-            await _context.SaveChangesAsync();
+            var existingReview = await _context.Review
+                .Where(r => r.MovieTitle == review.MovieTitle)
+                .FirstOrDefaultAsync();
 
-            return CreatedAtAction("GetReview", new { id = review.ReviewId }, review);
+            if (existingReview == null)
+            {
+                _context.Review.Add(review);
+                await _context.SaveChangesAsync();
+            }
+
+            return Ok(new CommonResponse
+            {
+                ResultCode = ResultCode.Ok
+            });
         }
 
         // DELETE: api/ReviewApi/5

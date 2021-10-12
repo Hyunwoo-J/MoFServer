@@ -10,7 +10,7 @@ using MoFModel.Contexts;
 namespace MoFModel.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211011195505_Initial")]
+    [Migration("20211012172117_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -268,7 +268,7 @@ namespace MoFModel.Migrations
                     b.Property<string>("PosterPath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("RealeaseDate")
+                    b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime2");
 
                     b.Property<double>("StarPoint")

@@ -176,7 +176,7 @@ namespace MoFModel.Migrations
                     MovieTitle = table.Column<string>(nullable: false),
                     PosterPath = table.Column<string>(nullable: true),
                     BackdropPath = table.Column<string>(nullable: true),
-                    RealeaseDate = table.Column<DateTime>(nullable: false),
+                    ReleaseDate = table.Column<DateTime>(nullable: false),
                     StarPoint = table.Column<double>(nullable: false),
                     ViewingDate = table.Column<DateTime>(nullable: false),
                     MovieTheaterId = table.Column<int>(nullable: true),

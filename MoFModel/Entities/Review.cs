@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace MoFModel.Entities
@@ -15,11 +17,10 @@ namespace MoFModel.Entities
 
         public string BackdropPath { get; set; }
 
-        public DateTime RealeaseDate { get; set; }
+        public DateTime ReleaseDate { get; set; }
 
         public double StarPoint { get; set; }
 
-        [Required]
         public DateTime ViewingDate { get; set; }
 
         public int? MovieTheaterId { get; set; }
@@ -33,6 +34,7 @@ namespace MoFModel.Entities
         public string Memo { get; set; }
 
         public DateTime InsertDate = DateTime.UtcNow;
+
         public DateTime UpdateDate { get; set; }
     }
 }
