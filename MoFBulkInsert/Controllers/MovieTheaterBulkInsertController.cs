@@ -22,18 +22,7 @@ namespace MovieTheaterInfomation.Controllers
             _context = context;
         }
 
-        // GET: api/theater
-        [HttpGet]
-        public async Task<ActionResult<string>> GetMovieTheater()
-        {
-            var list = await _context.MovieTheater
-                .OrderBy(m => m.MovieTheaterId)
-                .ToListAsync();
-
-            return Ok("Success");
-        }
-
-        // POST: api/theater
+        // POST: bi/theater
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
