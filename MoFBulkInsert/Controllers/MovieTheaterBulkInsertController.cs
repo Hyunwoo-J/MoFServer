@@ -22,9 +22,11 @@ namespace MovieTheaterInfomation.Controllers
             _context = context;
         }
 
-        // POST: bi/theater
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// 영화관 목록을 Bulk Insert 합니다.
+        /// </summary>
+        /// <param name="movieTheater"> 영화관 데이터 </param>
+        /// <returns> 서버 응답 코드 </returns>
         [HttpPost]
         public async Task<ActionResult<MovieTheater>> PostMovieTheater(MovieTheater movieTheater)
         {
@@ -40,7 +42,7 @@ namespace MovieTheaterInfomation.Controllers
 
             return Ok(new CommonResponse
             {
-                ResultCode = ResultCode.Ok
+                Code = ResultCode.Ok
             });
         }
     }

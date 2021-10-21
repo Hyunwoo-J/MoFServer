@@ -1,11 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace MoFModel.Entities
 {
+    /// <summary>
+    /// 영화관 정보
+    /// </summary>
     public class MovieTheater
     {
+        /// <summary>
+        /// 
+        /// </summary>
         [Display(Name = "ID")]
         public int MovieTheaterId { get; set; }
 
@@ -21,6 +28,7 @@ namespace MoFModel.Entities
         [Display(Name = "영화상영관명")]
         public string Name { get; set; }
 
+        [JsonIgnore]
         public List<Review> Reviews { get; set; }
     }
 }

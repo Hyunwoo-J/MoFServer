@@ -10,7 +10,7 @@ using MoFModel.Contexts;
 namespace MoFModel.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211012172117_Initial")]
+    [Migration("20211013174041_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

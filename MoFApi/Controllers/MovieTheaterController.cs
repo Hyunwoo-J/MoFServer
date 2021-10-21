@@ -32,7 +32,7 @@ namespace MoFApi.Controllers
 
             return Ok(new MovieTheaterListResponse
             {
-                ResultCode = ResultCode.Ok,
+                Code = ResultCode.Ok,
                 List = list
             });
         }
@@ -101,7 +101,7 @@ namespace MoFApi.Controllers
 
             return Ok(new CommonResponse
             {
-                ResultCode = ResultCode.Ok
+                Code = ResultCode.Ok
             });
         }
 

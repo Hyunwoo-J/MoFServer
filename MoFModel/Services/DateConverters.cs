@@ -5,6 +5,9 @@ using System.Text.Json.Serialization;
 
 namespace MoFModel.Services
 {
+    /// <summary>
+    /// 날짜 형식을 표준 문자열 형식으로 변환해줍니다.
+    /// </summary>
     public class ISO8601DateTimeConverter : JsonConverter<DateTime>
     {
         public override bool CanConvert(Type typeToConvert)
@@ -50,6 +53,11 @@ namespace MoFModel.Services
         }
     }
 
+    /// <summary>
+    /// 날짜 형식을 표준 문자열 형식으로 변환해줍니다.
+    ///
+    /// Nullable 형식을 포함합니다.
+    /// </summary>
     public class ISO8601NullableDateTimeConverter : JsonConverter<DateTime?>
     {
         public override bool CanConvert(Type typeToConvert)

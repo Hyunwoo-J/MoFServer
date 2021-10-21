@@ -17,30 +17,41 @@ namespace MoFApi.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class ReviewApiController : ControllerBase
+    public class ReviewController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public ReviewApiController(ApplicationDbContext context)
+        public ReviewController(ApplicationDbContext context)
         {
             _context = context;
         }
 
         /// <summary>
-        /// 
+        /// 전체 리뷰 데이터를 가져옵니다.
         /// </summary>
-        /// <returns></returns>
+        /// <returns> 서버 응답 코드와 메시지, 영화 목록 </returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Review>>> GetReview()
+        public async Task<ActionResult<ReviewListResponse>> GetReview()
         {
-            return await _context.Review.ToListAsync();
+            var list = await _context.Review
+                .Include(r => r.MovieTheater)
+                .OrderBy(r => r.ReviewId)
+                .Select(r => new ReviewDto(r))
+                .ToListAsync();
+
+            return Ok(new ReviewListResponse
+            {
+                Code = ResultCode.Ok,
+                TotalCount = list.Count,
+                List = list
+            });
         }
 
         /// <summary>
-        /// 
+        /// 검색한 id와 일치하는 리뷰 데이터를 가져옵니다.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id"> 검색할 id </param>
+        /// <returns> 검색된 리뷰 데이터 </returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Review>> GetReview(int id)
         {
@@ -54,15 +65,22 @@ namespace MoFApi.Controllers
             return review;
         }
 
-        // PUT: api/ReviewApi/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// 저장된 리뷰 데이터를 수정합니다.
+        /// </summary>
+        /// <param name="id"> 수정할 리뷰 아이디 </param>
+        /// <param name="review"> 새로 넣을 리뷰 </param>
+        /// <returns> 서버 응답 코드와 메시지 </returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutReview(int id, Review review)
         {
             if (id != review.ReviewId)
             {
-                return BadRequest();
+                return Ok(new CommonResponse
+                {
+                    Code = ResultCode.ReviewNotExists,
+                    Message = "Not exist"
+                });
             }
 
             _context.Entry(review).State = EntityState.Modified;
@@ -75,7 +93,11 @@ namespace MoFApi.Controllers
             {
                 if (!ReviewExists(id))
                 {
-                    return NotFound();
+                    return Ok(new CommonResponse
+                    {
+                        Code = ResultCode.ReviewNotExists,
+                        Message = "Not exist"
+                    });
                 }
                 else
                 {
@@ -83,45 +105,94 @@ namespace MoFApi.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(new ReviewPutResponse
+            {
+                Code = ResultCode.Ok,
+                Review = review
+            });
         }
 
-        // POST: api/Review
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// 리뷰를 저장합니다.
+        /// </summary>
+        /// <param name="review"> 전달된 리뷰 데이터 </param>
+        /// <returns> 리뷰 객체 </returns>
         [HttpPost]
-        public async Task<ActionResult<Review>> PostMovieTheater(Review review)
+        public async Task<ActionResult<Review>> PostMovieTheater(ReviewPostData review)
         {
+            var existingMovieTheater = _context.MovieTheater
+                .Where(m => m.Name == review.MovieTheater)
+                .FirstOrDefault();
+
+            if (existingMovieTheater == null)
+            {
+                return Ok(new CommonResponse
+                {
+                    Code = ResultCode.Fail
+                });
+            };
+
             var existingReview = await _context.Review
                 .Where(r => r.MovieTitle == review.MovieTitle)
                 .FirstOrDefaultAsync();
 
-            if (existingReview == null)
+            if (existingReview != null)
             {
-                _context.Review.Add(review);
-                await _context.SaveChangesAsync();
+                return Ok(new CommonResponse
+                {
+                    Code = ResultCode.Fail,
+                    Message = "This review has already been written."
+                });
             }
+
+            var newReview = new Review
+            {
+                MovieTitle = review.MovieTitle,
+                PosterPath = review.PosterPath,
+                BackdropPath = review.BackdropPath,
+                ReleaseDate = review.ReleaseDate,
+                StarPoint = review.StarPoint,
+                ViewingDate = review.ViewingDate,
+                Person = review.Person,
+                Memo = review.Memo,
+                UpdateDate = review.UpdateDate,
+                MovieTheaterId = existingMovieTheater.MovieTheaterId
+            };
+
+            _context.Review.Add(newReview);
+            await _context.SaveChangesAsync();
 
             return Ok(new CommonResponse
             {
-                ResultCode = ResultCode.Ok
+                Code = ResultCode.Ok
             });
         }
 
-        // DELETE: api/ReviewApi/5
+        /// <summary>
+        /// 리뷰를 삭제합니다.
+        /// </summary>
+        /// <param name="id"> 리뷰 아이디 </param>
+        /// <returns> 서버 응답 코드 </returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<Review>> DeleteReview(int id)
         {
             var review = await _context.Review.FindAsync(id);
             if (review == null)
             {
-                return NotFound();
+                return Ok(new CommonResponse
+                {
+                    Code = ResultCode.Fail,
+                    Message = "존재하지 않는 리뷰입니다."
+                });
             }
 
             _context.Review.Remove(review);
             await _context.SaveChangesAsync();
 
-            return review;
+            return Ok(new CommonResponse
+            {
+                Code = ResultCode.Ok,
+            });
         }
 
         private bool ReviewExists(int id)
