@@ -10,7 +10,7 @@ using MoFModel.Contexts;
 namespace MoFModel.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211013174041_Initial")]
+    [Migration("20211025172254_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -253,6 +253,9 @@ namespace MoFModel.Migrations
 
                     b.Property<string>("Memo")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("MovieTheaterId")
                         .HasColumnType("int");

@@ -173,6 +173,7 @@ namespace MoFModel.Migrations
                 {
                     ReviewId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    MovieId = table.Column<int>(nullable: false),
                     MovieTitle = table.Column<string>(nullable: false),
                     PosterPath = table.Column<string>(nullable: true),
                     BackdropPath = table.Column<string>(nullable: true),

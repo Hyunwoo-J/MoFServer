@@ -252,6 +252,9 @@ namespace MoFModel.Migrations
                     b.Property<string>("Memo")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("MovieTheaterId")
                         .HasColumnType("int");
 

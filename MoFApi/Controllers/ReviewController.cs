@@ -53,16 +53,28 @@ namespace MoFApi.Controllers
         /// <param name="id"> 검색할 id </param>
         /// <returns> 검색된 리뷰 데이터 </returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<Review>> GetReview(int id)
+        public async Task<ActionResult<ReviewResponse>> GetReview(int id)
         {
-            var review = await _context.Review.FindAsync(id);
+            var review = await _context.Review
+                .Include(r => r.MovieTheater)
+                .Where(r => r.ReviewId == id)
+                .Select(r => new ReviewDto(r))
+                .FirstOrDefaultAsync();
 
             if (review == null)
             {
-                return NotFound();
+                return Ok(new CommonResponse
+                {
+                    Code = ResultCode.ReviewNotExists,
+                    Message = "Review not exists"
+                });
             }
 
-            return review;
+            return Ok(new ReviewResponse
+            {
+                Code = ResultCode.Ok,
+                Review = review
+            });
         }
 
         /// <summary>
@@ -72,7 +84,7 @@ namespace MoFApi.Controllers
         /// <param name="review"> 새로 넣을 리뷰 </param>
         /// <returns> 서버 응답 코드와 메시지 </returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutReview(int id, Review review)
+        public async Task<IActionResult> PutReview(int id, ReviewPutData review)
         {
             if (id != review.ReviewId)
             {
@@ -83,32 +95,30 @@ namespace MoFApi.Controllers
                 });
             }
 
-            _context.Entry(review).State = EntityState.Modified;
+            var targetReview = await _context.Review
+                .Where(r => r.ReviewId == id)
+                .FirstOrDefaultAsync();
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ReviewExists(id))
-                {
-                    return Ok(new CommonResponse
-                    {
-                        Code = ResultCode.ReviewNotExists,
-                        Message = "Not exist"
-                    });
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            var movieTheater = _context.MovieTheater
+                .Where(m => m.Name == review.MovieTheater)
+                .FirstOrDefault();
+
+            targetReview.MovieTitle = review.MovieTitle;
+            targetReview.PosterPath = review.PosterPath;
+            targetReview.BackdropPath = review.BackdropPath;
+            targetReview.ReleaseDate = review.ReleaseDate;
+            targetReview.StarPoint = review.StarPoint;
+            targetReview.ViewingDate = review.ViewingDate;
+            targetReview.Person = review.Person;
+            targetReview.Memo = review.Memo;
+            targetReview.UpdateDate = review.UpdateDate;
+            targetReview.MovieTheater = movieTheater;
+
+            await _context.SaveChangesAsync();
 
             return Ok(new ReviewPutResponse
             {
                 Code = ResultCode.Ok,
-                Review = review
             });
         }
 
@@ -147,6 +157,7 @@ namespace MoFApi.Controllers
 
             var newReview = new Review
             {
+                MovieId = review.MovieId,
                 MovieTitle = review.MovieTitle,
                 PosterPath = review.PosterPath,
                 BackdropPath = review.BackdropPath,

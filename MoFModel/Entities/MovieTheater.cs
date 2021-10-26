@@ -27,8 +27,7 @@ namespace MoFModel.Entities
         [Required]
         [Display(Name = "영화상영관명")]
         public string Name { get; set; }
-
-        [JsonIgnore]
+        
         public List<Review> Reviews { get; set; }
     }
 }

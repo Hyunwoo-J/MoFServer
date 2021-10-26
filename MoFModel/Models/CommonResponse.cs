@@ -39,10 +39,15 @@ namespace MoFModel.Models
         public List<ReviewDto> List { get; set; }
     }
 
+    public class ReviewResponse: CommonResponse
+    {
+        public ReviewDto Review { get; set; }
+    }
+
     /// <summary>
     /// 리뷰 PUT
     /// </summary>
-    public class ReviewPutResponse: ReviewPostResponse
+    public class ReviewPutResponse: CommonResponse
     {
 
     }

@@ -11,9 +11,9 @@ namespace MoFModel.Entities
     /// </summary>
     public class Review
     {
-        // 영화 ID 저장
-
         public int ReviewId { get; set; }
+
+        public int MovieId { get; set; }
 
         [Required]
         public string MovieTitle { get; set; }
@@ -24,7 +24,9 @@ namespace MoFModel.Entities
         public double StarPoint { get; set; }
         public DateTime ViewingDate { get; set; }
 
-        public int MovieTheaterId { get; set; }
+        public int? MovieTheaterId { get; set; }
+
+        [JsonIgnore]
         public MovieTheater MovieTheater { get; set; }
 
         [Required]
@@ -38,6 +40,7 @@ namespace MoFModel.Entities
 
     public class ReviewPostData
     {
+        public int MovieId { get; set; }
         public string MovieTitle { get; set; }
         public string PosterPath { get; set; }
         public string BackdropPath { get; set; }
@@ -50,11 +53,17 @@ namespace MoFModel.Entities
         public string MovieTheater { get; set; }
     }
 
+    public class ReviewPutData: ReviewPostData
+    {
+        public int ReviewId { get; set; }
+    }
+
     public class ReviewDto
     {
         public ReviewDto(Review review)
         {
             ReviewId = review.ReviewId;
+            MovieId = review.MovieId;
             MovieTitle = review.MovieTitle;
             PosterPath = review.PosterPath;
             BackdropPath = review.BackdropPath;
@@ -68,6 +77,7 @@ namespace MoFModel.Entities
         }
 
         public int ReviewId { get; set; }
+        public int MovieId { get; set; }
         public string MovieTitle { get; set; }
         public string PosterPath { get; set; }
         public string BackdropPath { get; set; }
