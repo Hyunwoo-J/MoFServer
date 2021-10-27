@@ -14,7 +14,7 @@ namespace MoFModel.Models
     }
 
     /// <summary>
-    /// 리뷰 POST
+    /// 리뷰 Post
     /// </summary>
     public class ReviewPostResponse: CommonResponse
     {
@@ -45,9 +45,31 @@ namespace MoFModel.Models
     }
 
     /// <summary>
-    /// 리뷰 PUT
+    /// 리뷰 Put
     /// </summary>
     public class ReviewPutResponse: CommonResponse
+    {
+
+    }
+
+    public class EmailLoginPostData
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+
+    public class EmailJoinPostData: EmailLoginPostData
+    {
+
+    }
+
+    public class LoginResponse: CommonResponse
+    {
+        public string UserId { get; set; }
+        public string Token { get; set; }
+    }
+
+    public class JoinResponse: LoginResponse
     {
 
     }
