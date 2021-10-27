@@ -6,8 +6,10 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using MoFModel.Contexts;
 using MoFModel.Entities;
 using MoFModel.Models;
@@ -20,9 +22,19 @@ namespace MoFApi.Controllers
     public class ReviewController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        public IConfiguration Configuration { get; }
 
-        public ReviewController(ApplicationDbContext context)
+        public ReviewController(
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            IConfiguration configuration,
+            ApplicationDbContext context)
         {
+            _userManager = userManager;
+            _signInManager = signInManager;
+            Configuration = configuration;
             _context = context;
         }
 
@@ -33,7 +45,18 @@ namespace MoFApi.Controllers
         [HttpGet]
         public async Task<ActionResult<ReviewListResponse>> GetReview()
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Ok(new CommonResponse
+                {
+                    Code = ResultCode.Fail,
+                    Message = "User not found"
+                });
+            }
+
             var list = await _context.Review
+                .Where(r => r.UserId == user.Id)
                 .Include(r => r.MovieTheater)
                 .OrderBy(r => r.ReviewId)
                 .Select(r => new ReviewDto(r))
@@ -55,6 +78,16 @@ namespace MoFApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ReviewResponse>> GetReview(int id)
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Ok(new CommonResponse
+                {
+                    Code = ResultCode.Fail,
+                    Message = "User not found"
+                });
+            }
+
             var review = await _context.Review
                 .Include(r => r.MovieTheater)
                 .Where(r => r.ReviewId == id)
@@ -86,6 +119,16 @@ namespace MoFApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutReview(int id, ReviewPutData review)
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Ok(new CommonResponse
+                {
+                    Code = ResultCode.Fail,
+                    Message = "User not found"
+                });
+            }
+
             if (id != review.ReviewId)
             {
                 return Ok(new CommonResponse
@@ -96,8 +139,16 @@ namespace MoFApi.Controllers
             }
 
             var targetReview = await _context.Review
-                .Where(r => r.ReviewId == id)
+                .Where(r => r.ReviewId == id && r.UserId == user.Id)
                 .FirstOrDefaultAsync();
+            if (targetReview == null)
+            {
+                return Ok(new CommonResponse
+                {
+                    Code = ResultCode.Fail,
+                    Message = "Review not found"
+                });
+            }
 
             var movieTheater = _context.MovieTheater
                 .Where(m => m.Name == review.MovieTheater)
@@ -130,6 +181,16 @@ namespace MoFApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Review>> PostMovieTheater(ReviewPostData review)
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Ok(new CommonResponse
+                {
+                    Code = ResultCode.Fail,
+                    Message = "User not found"
+                });
+            }
+
             var existingMovieTheater = _context.MovieTheater
                 .Where(m => m.Name == review.MovieTheater)
                 .FirstOrDefault();
@@ -143,7 +204,7 @@ namespace MoFApi.Controllers
             };
 
             var existingReview = await _context.Review
-                .Where(r => r.MovieTitle == review.MovieTitle)
+                .Where(r => r.MovieTitle == review.MovieTitle && r.UserId == user.Id)
                 .FirstOrDefaultAsync();
 
             if (existingReview != null)
@@ -157,6 +218,7 @@ namespace MoFApi.Controllers
 
             var newReview = new Review
             {
+                UserId = user.Id,
                 MovieId = review.MovieId,
                 MovieTitle = review.MovieTitle,
                 PosterPath = review.PosterPath,
@@ -187,7 +249,19 @@ namespace MoFApi.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Review>> DeleteReview(int id)
         {
-            var review = await _context.Review.FindAsync(id);
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Ok(new CommonResponse
+                {
+                    Code = ResultCode.Fail,
+                    Message = "User not found"
+                });
+            }
+
+            var review = await _context.Review
+                .Where(r => r.ReviewId == id && r.UserId == user.Id)
+                .FirstOrDefaultAsync();
             if (review == null)
             {
                 return Ok(new CommonResponse

@@ -13,6 +13,9 @@ namespace MoFModel.Entities
     {
         public int ReviewId { get; set; }
 
+        [Required]
+        public string UserId { get; set; }
+
         public int MovieId { get; set; }
 
         [Required]

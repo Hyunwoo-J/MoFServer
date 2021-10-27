@@ -1,10 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using MoFModel.Models;
 
 namespace MoFApi.Controllers
@@ -15,13 +20,46 @@ namespace MoFApi.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private IConfiguration Configuration { get; }
 
         public LoginController(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            Configuration = configuration;
+        }
+
+        private string GetApiToken(ApplicationUser user)
+        {
+            try
+            {
+                var claims = new[]
+                {
+                    new Claim(ClaimTypes.Name, user.Id),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id),
+                    new Claim(ClaimTypes.Email, user.Email)
+                };
+
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSecurityKey"]));
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+                var token = new JwtSecurityToken(
+                    Configuration["JwtIssuer"],
+                    Configuration["JwtAudience"],
+                    claims,
+                    expires: DateTime.UtcNow.AddMonths(2),
+                    signingCredentials: creds
+                    );
+
+                return new JwtSecurityTokenHandler().WriteToken(token);
+            }
+            catch
+            {
+                return "fail";
+            }
         }
 
         [HttpPost("email")]
@@ -30,19 +68,26 @@ namespace MoFApi.Controllers
             var result = await _signInManager.PasswordSignInAsync(data.Email, data.Password, false, false);
             if (result.Succeeded)
             {
-                return Ok(new LoginResponse
+                var user = await _userManager.FindByEmailAsync(data.Email);
+
+                if (user != null)
                 {
-                    Code = ResultCode.Ok,
-                    UserId = "",
-                    Token = ""
-                });
+                    var token = GetApiToken(user);
+                    if (!token.Contains("fail"))
+                    {
+                        return Ok(new LoginResponse
+                        {
+                            Code = ResultCode.Ok,
+                            UserId = user.Id,
+                            Token = token
+                        });
+                    }
+                }
             }
 
             return Ok(new LoginResponse
             {
                 Code = ResultCode.Fail,
-                UserId = "",
-                Token = ""
             });
         }
 
@@ -53,13 +98,21 @@ namespace MoFApi.Controllers
 
             if (result.Succeeded)
             {
-                return Ok(new LoginResponse
+                var user = await _userManager.FindByEmailAsync(data.Email);
+
+                if (user != null)
                 {
-                    Code = ResultCode.Ok,
-                    Message = "login success",
-                    UserId = "",
-                    Token = ""
-                });
+                    var token = GetApiToken(user);
+                    if (!token.Contains("fail"))
+                    {
+                        return Ok(new LoginResponse
+                        {
+                            Code = ResultCode.Ok,
+                            UserId = user.Id,
+                            Token = token
+                        });
+                    }
+                }
             }
 
             var newUser = new ApplicationUser
@@ -82,8 +135,8 @@ namespace MoFApi.Controllers
                     {
                         Code = ResultCode.Ok,
                         Message = "join & login success",
-                        UserId = "",
-                        Token = ""
+                        UserId = newUser.Id,
+                        Token = GetApiToken(newUser)
                     });
                 }
             }
@@ -92,8 +145,6 @@ namespace MoFApi.Controllers
             {
                 Code = ResultCode.Fail,
                 Message = createResult.Errors.First().Description,
-                UserId = "",
-                Token = ""
             });
         }
     }
