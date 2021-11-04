@@ -5,18 +5,18 @@ using MoFModel.Entities;
 namespace MoFModel.Models
 {
     /// <summary>
-    /// 기본 서버 응답 모델
+    /// 리뷰 목록 응답 모델
     /// </summary>
-    public class CommonResponse
+    public class ReviewListResponse : CommonResponse
     {
         /// <summary>
-        /// 응답 코드
+        /// 총 리뷰 수
         /// </summary>
-        public int Code { get; set; }
+        public int TotalCount { get; set; }
 
         /// <summary>
-        /// 메시지
+        /// 리뷰 목록
         /// </summary>
-        public string Message { get; set; }
+        public List<ReviewDto> List { get; set; }
     }
 }

@@ -276,13 +276,8 @@ namespace MoFApi.Controllers
 
             return Ok(new CommonResponse
             {
-                Code = ResultCode.Ok,
+                Code = ResultCode.Ok
             });
-        }
-
-        private bool ReviewExists(int id)
-        {
-            return _context.Review.Any(e => e.ReviewId == id);
         }
     }
 }
