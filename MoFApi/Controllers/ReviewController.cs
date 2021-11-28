@@ -39,7 +39,7 @@ namespace MoFApi.Controllers
         }
 
         /// <summary>
-        /// 전체 리뷰 데이터를 가져옵니다.
+        /// 유저 정보와 일치하는 전체 리뷰 데이터를 가져옵니다.
         /// </summary>
         /// <returns> 서버 응답 코드와 메시지, 영화 목록 </returns>
         [HttpGet]
@@ -90,7 +90,7 @@ namespace MoFApi.Controllers
 
             var review = await _context.Review
                 .Include(r => r.MovieTheater)
-                .Where(r => r.ReviewId == id)
+                .Where(r => r.ReviewId == id && r.UserId == user.Id)
                 .Select(r => new ReviewDto(r))
                 .FirstOrDefaultAsync();
 
@@ -162,8 +162,8 @@ namespace MoFApi.Controllers
             targetReview.ViewingDate = review.ViewingDate;
             targetReview.Person = review.Person;
             targetReview.Memo = review.Memo;
-            targetReview.UpdateDate = review.UpdateDate;
             targetReview.MovieTheater = movieTheater;
+            targetReview.UpdateDate = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
 
@@ -228,8 +228,8 @@ namespace MoFApi.Controllers
                 ViewingDate = review.ViewingDate,
                 Person = review.Person,
                 Memo = review.Memo,
-                UpdateDate = review.UpdateDate,
-                MovieTheaterId = existingMovieTheater.MovieTheaterId
+                MovieTheaterId = existingMovieTheater.MovieTheaterId,
+                InsertDate = DateTime.UtcNow
             };
 
             _context.Review.Add(newReview);
