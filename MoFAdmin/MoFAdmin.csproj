@@ -23,13 +23,11 @@
     <None Remove="Microsoft.EntityFrameworkCore.SqlServer" />
     <None Remove="X.PagedList.Mvc.Core" />
     <None Remove="Microsoft.AspNetCore.Authentication.Facebook" />
-    <None Remove="Service\" />
     <None Remove="AspNet.Security.OAuth.KakaoTalk" />
     <None Remove="AspNet.Security.OAuth.Apple" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
-    <Folder Include="Service\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MoFModel\MoFModel.csproj">

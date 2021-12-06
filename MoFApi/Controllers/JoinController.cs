@@ -25,6 +25,11 @@ namespace MoFApi.Controllers
             _signInManager = signInManager;
         }
 
+        /// <summary>
+        /// 이메일과 비밀번호로 회원가입합니다.
+        /// </summary>
+        /// <param name="data"> 회원가입 정보 </param>
+        /// <returns> 회원가입 응답 객체 </returns>
         [HttpPost("email")]
         public async Task<IActionResult> PostEmail(EmailJoinPostData data)
         {

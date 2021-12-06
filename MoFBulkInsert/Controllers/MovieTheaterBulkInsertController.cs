@@ -11,7 +11,7 @@ using MoFModel.Models;
 
 namespace MovieTheaterInfomation.Controllers
 {
-    [Route("bi/theater")]
+    [Route("theater")]
     [ApiController]
     public class MovieTheaterApiController : ControllerBase
     {

@@ -22,7 +22,10 @@ namespace MoFApi.Controllers
             _context = context;
         }
 
-        // GET: api/MovieTheaterApi
+        /// <summary>
+        /// 영화관 목록을 불러옵니다.
+        /// </summary>
+        /// <returns> 영화관 목록 응답 객체 </returns>
         [HttpGet]
         public async Task<ActionResult<MovieTheaterListResponse>> GetMovieTheater()
         {
@@ -37,7 +40,11 @@ namespace MoFApi.Controllers
             });
         }
 
-        // GET: api/MovieTheaterApi/5
+        /// <summary>
+        /// 아이디에 해당하는 영화관 정보를 가져옵니다.
+        /// </summary>
+        /// <param name="id"> 영화관 아이디 </param>
+        /// <returns> 일치하는 영화관 정보 </returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<MovieTheater>> GetMovieTheater(int id)
         {
@@ -51,9 +58,12 @@ namespace MoFApi.Controllers
             return movieTheater;
         }
 
-        // PUT: api/MovieTheaterApi/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// 아이디에 해당하는 영화관 정보를 수정합니다.
+        /// </summary>
+        /// <param name="id"> 영화관 아이디 </param>
+        /// <param name="movieTheater"> 수정된 영화관 정보 </param>
+        /// <returns> 서버 응답 코드 </returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMovieTheater(int id, MovieTheater movieTheater)
         {
@@ -61,7 +71,7 @@ namespace MoFApi.Controllers
             {
                 return BadRequest();
             }
-
+            
             _context.Entry(movieTheater).State = EntityState.Modified;
 
             try
@@ -83,9 +93,11 @@ namespace MoFApi.Controllers
             return NoContent();
         }
 
-        // POST: api/MovieTheaterApi
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// 영화관 정보를 저장합니다.
+        /// </summary>
+        /// <param name="movieTheater"> 저장할 영화관 정보 </param>
+        /// <returns> 서버 응답 코드 </returns>
         [HttpPost]
         public async Task<ActionResult<MovieTheater>> PostMovieTheater(MovieTheater movieTheater)
         {
@@ -105,7 +117,11 @@ namespace MoFApi.Controllers
             });
         }
 
-        // DELETE: api/MovieTheaterApi/5
+        /// <summary>
+        /// 아이디에 해당하는 영화관 정보를 삭제합니다.
+        /// </summary>
+        /// <param name="id"> 영화관 아이디 </param>
+        /// <returns> 삭제된 영화관 정보 </returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<MovieTheater>> DeleteMovieTheater(int id)
         {

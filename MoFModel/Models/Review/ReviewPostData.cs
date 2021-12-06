@@ -52,11 +52,6 @@ namespace MoFModel.Models
         public string Memo { get; set; }
 
         /// <summary>
-        /// 업데이트 날짜
-        /// </summary>
-        public DateTime UpdateDate { get; set; }
-
-        /// <summary>
         /// 영화관
         /// </summary>
         public string MovieTheater { get; set; }

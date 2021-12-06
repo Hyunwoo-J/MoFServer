@@ -398,3 +398,5 @@ MoFAdmin/appsettings.json
 MoFApi/appsettings.json
 
 MoFBulkInsert/appsettings.json
+
+MoFModel/Contexts/ApplicationDbContext.cs

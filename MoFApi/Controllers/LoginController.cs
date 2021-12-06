@@ -62,6 +62,11 @@ namespace MoFApi.Controllers
             }
         }
 
+        /// <summary>
+        /// 이메일과 비밀번호로 로그인합니다.
+        /// </summary>
+        /// <param name="data"> 로그인 정보 </param>
+        /// <returns> 로그인 응답 객체 </returns>
         [HttpPost("email")]
         public async Task<IActionResult> PostEmail(EmailLoginPostData data)
         {
@@ -91,6 +96,11 @@ namespace MoFApi.Controllers
             });
         }
 
+        /// <summary>
+        /// SNS 계정으로 로그인합니다.
+        /// </summary>
+        /// <param name="data"> SNS 로그인 정보 </param>
+        /// <returns> 로그인 응답 객체 </returns>
         [HttpPost("sso")]
         public async Task<IActionResult> PostSSO(SocialLoginPostData data)
         {

@@ -76,19 +76,16 @@ namespace MoFModel.Services
             {
                 var str = reader.GetString(); // Json으로부터 문자열 가져오기
 
-                // T는 작은 따옴표로 감싸기
                 return DateTime.ParseExact(str, "yyyy-MM-dd'T'HH:mm:ss", CultureInfo.InvariantCulture);
             }
             catch
             {
-                //Date() -> Swift는 현재 시간
-                return null; // 기본 날짜를 리턴하지 않고 null을 리턴
+                return null;
             }
         }
 
-        public override void Write(Utf8JsonWriter writer, DateTime? value, JsonSerializerOptions options) // 파라미터 nullable Datetime
+        public override void Write(Utf8JsonWriter writer, DateTime? value, JsonSerializerOptions options)
         {
-            // C# 날짜를 Json으로 바꿀 때
             try
             {
                 if (value == null)
@@ -97,18 +94,17 @@ namespace MoFModel.Services
                     return;
                 }
 
-                if (value.Value.Ticks == 0) // value.Value == value!
+                if (value.Value.Ticks == 0)
                 {
-                    writer.WriteNullValue(); // Null값
+                    writer.WriteNullValue();
                     return;
                 }
 
-                // 날짜 자체를 주고 받을 수는 없고 표준 문자열로 주고 받는다.
                 writer.WriteStringValue(value.Value.ToString("yyyy-MM-dd'T'HH:mm:ss", CultureInfo.InvariantCulture));
             }
             catch
             {
-                writer.WriteNullValue(); // Null값
+                writer.WriteNullValue();
             }
         }
     }

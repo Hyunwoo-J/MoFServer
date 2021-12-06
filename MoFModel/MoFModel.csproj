@@ -12,6 +12,9 @@
     <None Remove="Entities\" />
     <None Remove="Models\" />
     <None Remove="Services\" />
+    <None Remove="Models\Review\" />
+    <None Remove="Models\Theater\" />
+    <None Remove="Models\Login\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.19" />
@@ -26,5 +29,8 @@
     <Folder Include="Entities\" />
     <Folder Include="Models\" />
     <Folder Include="Services\" />
+    <Folder Include="Models\Review\" />
+    <Folder Include="Models\Theater\" />
+    <Folder Include="Models\Login\" />
   </ItemGroup>
 </Project>
