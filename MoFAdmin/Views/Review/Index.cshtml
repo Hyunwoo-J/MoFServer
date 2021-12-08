@@ -1,10 +1,10 @@
 @model IEnumerable<MoFModel.Entities.Review>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "사용자 영화 리뷰 목록";
 }
 
-<h1>Index</h1>
+<h1>사용자 영화 리뷰 목록</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,16 +13,10 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.MovieTitle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PosterPath)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BackdropPath)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReleaseDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.StarPoint)
@@ -34,10 +28,7 @@
                 @Html.DisplayNameFor(model => model.MovieTheater)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Person)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Memo)
+                @Html.DisplayNameFor(model => model.InsertDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.UpdateDate)
@@ -49,16 +40,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.MovieTitle)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PosterPath)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BackdropPath)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReleaseDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.StarPoint)
@@ -70,10 +55,7 @@
                 @Html.DisplayFor(modelItem => item.MovieTheater.BasicOrganization)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Person)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Memo)
+                @Html.DisplayFor(modelItem => item.InsertDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.UpdateDate)

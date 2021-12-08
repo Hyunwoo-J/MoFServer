@@ -11,7 +11,7 @@ namespace MoFModel.Entities
     public class MovieTheater
     {
         /// <summary>
-        /// 영화관 ID
+        /// 영화관 아이디
         /// </summary>
         [Display(Name = "ID")]
         public int MovieTheaterId { get; set; }
