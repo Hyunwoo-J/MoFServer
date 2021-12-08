@@ -11,5 +11,6 @@ namespace MoFModel.Models
         public static int Fail = -999;
 
         public static int ReviewNotExists = 1001;
+        public static int TheaterExists = 2001;
     }
 }

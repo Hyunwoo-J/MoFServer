@@ -73,7 +73,7 @@ namespace MoFApi.Controllers
         /// <summary>
         /// 검색한 id와 일치하는 리뷰 데이터를 가져옵니다.
         /// </summary>
-        /// <param name="id"> 검색할 id </param>
+        /// <param name="id"> 검색할 리뷰 아이디 </param>
         /// <returns> 리뷰 응답 객체 </returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<ReviewResponse>> GetReview(int id)
@@ -115,7 +115,7 @@ namespace MoFApi.Controllers
         /// </summary>
         /// <param name="id"> 수정할 리뷰 아이디 </param>
         /// <param name="review"> 새로 넣을 리뷰 </param>
-        /// <returns> 서버 응답 코드 </returns>
+        /// <returns> 리뷰 저장 응답 객체 </returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutReview(int id, ReviewPutData review)
         {
@@ -170,6 +170,7 @@ namespace MoFApi.Controllers
             return Ok(new ReviewPutResponse
             {
                 Code = ResultCode.Ok,
+                Message = "Review has been saved"
             });
         }
 
@@ -177,7 +178,7 @@ namespace MoFApi.Controllers
         /// 리뷰를 저장합니다.
         /// </summary>
         /// <param name="review"> 전달된 리뷰 데이터 </param>
-        /// <returns> 서버 응답 코드 </returns>
+        /// <returns> 서버 응답 코드와 메시지 </returns>
         [HttpPost]
         public async Task<ActionResult<Review>> PostMovieTheater(ReviewPostData review)
         {
@@ -199,7 +200,8 @@ namespace MoFApi.Controllers
             {
                 return Ok(new CommonResponse
                 {
-                    Code = ResultCode.Fail
+                    Code = ResultCode.Fail,
+                    Message = "Movie theater not found"
                 });
             };
 
@@ -212,7 +214,7 @@ namespace MoFApi.Controllers
                 return Ok(new CommonResponse
                 {
                     Code = ResultCode.Fail,
-                    Message = "This review has already been written."
+                    Message = "This review has already been written"
                 });
             }
 
@@ -237,7 +239,8 @@ namespace MoFApi.Controllers
 
             return Ok(new CommonResponse
             {
-                Code = ResultCode.Ok
+                Code = ResultCode.Ok,
+                Message = "Review has been saved"
             });
         }
 
@@ -245,7 +248,7 @@ namespace MoFApi.Controllers
         /// 리뷰를 삭제합니다.
         /// </summary>
         /// <param name="id"> 리뷰 아이디 </param>
-        /// <returns> 서버 응답 코드 </returns>
+        /// <returns> 서버 응답 코드와 메시지 </returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<Review>> DeleteReview(int id)
         {
@@ -267,7 +270,7 @@ namespace MoFApi.Controllers
                 return Ok(new CommonResponse
                 {
                     Code = ResultCode.Fail,
-                    Message = "존재하지 않는 리뷰입니다."
+                    Message = "Review not exist"
                 });
             }
 
@@ -276,7 +279,8 @@ namespace MoFApi.Controllers
 
             return Ok(new CommonResponse
             {
-                Code = ResultCode.Ok
+                Code = ResultCode.Ok,
+                Message = "Review has been deleted"
             });
         }
     }

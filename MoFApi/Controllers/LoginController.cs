@@ -83,6 +83,7 @@ namespace MoFApi.Controllers
                         return Ok(new LoginResponse
                         {
                             Code = ResultCode.Ok,
+                            Message = "Login success",
                             UserId = user.Id,
                             Token = token
                         });
@@ -93,6 +94,7 @@ namespace MoFApi.Controllers
             return Ok(new LoginResponse
             {
                 Code = ResultCode.Fail,
+                Message = "Login fail"
             });
         }
 
@@ -118,6 +120,7 @@ namespace MoFApi.Controllers
                         return Ok(new LoginResponse
                         {
                             Code = ResultCode.Ok,
+                            Message = "Login success",
                             UserId = user.Id,
                             Token = token
                         });
@@ -144,7 +147,7 @@ namespace MoFApi.Controllers
                     return Ok(new LoginResponse
                     {
                         Code = ResultCode.Ok,
-                        Message = "join & login success",
+                        Message = "Join & Login success",
                         UserId = newUser.Id,
                         Token = GetApiToken(newUser)
                     });

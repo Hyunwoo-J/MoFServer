@@ -45,6 +45,7 @@ namespace MoFApi.Controllers
                 return Ok(new JoinResponse
                 {
                     Code = ResultCode.Ok,
+                    Message = "Join success",
                     UserId = "",
                     Token = ""
                 });

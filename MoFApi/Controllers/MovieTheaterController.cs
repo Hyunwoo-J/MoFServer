@@ -97,7 +97,7 @@ namespace MoFApi.Controllers
         /// 영화관 정보를 저장합니다.
         /// </summary>
         /// <param name="movieTheater"> 저장할 영화관 정보 </param>
-        /// <returns> 서버 응답 코드 </returns>
+        /// <returns> 서버 응답 코드와 메시지 </returns>
         [HttpPost]
         public async Task<ActionResult<MovieTheater>> PostMovieTheater(MovieTheater movieTheater)
         {
@@ -109,11 +109,18 @@ namespace MoFApi.Controllers
             {
                 _context.MovieTheater.Add(movieTheater);
                 await _context.SaveChangesAsync();
+
+                return Ok(new CommonResponse
+                {
+                    Code = ResultCode.Ok,
+                    Message = "Movie theater has been saved"
+                });
             }
 
             return Ok(new CommonResponse
             {
-                Code = ResultCode.Ok
+                Code = ResultCode.TheaterExists,
+                Message = "Movie theater already exists"
             });
         }
 
