@@ -16,50 +16,19 @@ namespace MoFApi.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class LoginController : ControllerBase
+    public class LoginController : CommonController
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private IConfiguration Configuration { get; }
+        
 
         public LoginController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IConfiguration configuration)
+            IConfiguration configuration) : base(configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            Configuration = configuration;
-        }
-
-        private string GetApiToken(ApplicationUser user)
-        {
-            try
-            {
-                var claims = new[]
-                {
-                    new Claim(ClaimTypes.Name, user.Id),
-                    new Claim(ClaimTypes.NameIdentifier, user.Id),
-                    new Claim(ClaimTypes.Email, user.Email)
-                };
-
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSecurityKey"]));
-                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-                var token = new JwtSecurityToken(
-                    Configuration["JwtIssuer"],
-                    Configuration["JwtAudience"],
-                    claims,
-                    expires: DateTime.UtcNow.AddMonths(2),
-                    signingCredentials: creds
-                    );
-
-                return new JwtSecurityTokenHandler().WriteToken(token);
-            }
-            catch
-            {
-                return "fail";
-            }
         }
 
         /// <summary>

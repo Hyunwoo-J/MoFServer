@@ -12,14 +12,15 @@ namespace MoFApi.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class JoinController : ControllerBase
+    public class JoinController : CommonController
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
         public JoinController(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            IConfiguration configuration) : base(configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -46,17 +47,15 @@ namespace MoFApi.Controllers
                 {
                     Code = ResultCode.Ok,
                     Message = "Join success",
-                    UserId = "",
-                    Token = ""
+                    UserId = user.Id,
+                    Token = GetApiToken(user)
                 });
             }
 
             return Ok(new JoinResponse
             {
                 Code = ResultCode.Fail,
-                Message = result.Errors.FirstOrDefault()?.Description,
-                UserId = "",
-                Token = ""
+                Message = result.Errors.FirstOrDefault()?.Description
             });
         }
     }
