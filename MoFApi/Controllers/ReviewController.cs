@@ -39,7 +39,7 @@ namespace MoFApi.Controllers
         }
 
         /// <summary>
-        /// 유저 정보와 일치하는 전체 리뷰 데이터를 가져옵니다.
+        /// 유저 아이디와 일치하는 전체 리뷰 데이터를 가져옵니다.
         /// </summary>
         /// <returns> 리뷰 목록 응답 객체 </returns>
         [HttpGet]
@@ -114,8 +114,8 @@ namespace MoFApi.Controllers
         /// 저장된 리뷰 데이터를 수정합니다.
         /// </summary>
         /// <param name="id"> 수정할 리뷰 아이디 </param>
-        /// <param name="review"> 새로 넣을 리뷰 </param>
-        /// <returns> 리뷰 저장 응답 객체 </returns>
+        /// <param name="review"> 새로 넣을 리뷰 데이터 </param>
+        /// <returns> 리뷰 수정 응답 객체 </returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutReview(int id, ReviewPutData review)
         {
@@ -177,7 +177,7 @@ namespace MoFApi.Controllers
         /// <summary>
         /// 리뷰를 저장합니다.
         /// </summary>
-        /// <param name="review"> 전달된 리뷰 데이터 </param>
+        /// <param name="review"> 저장할 리뷰 데이터 </param>
         /// <returns> 서버 응답 코드와 메시지 </returns>
         [HttpPost]
         public async Task<ActionResult<Review>> PostMovieTheater(ReviewPostData review)
@@ -247,7 +247,7 @@ namespace MoFApi.Controllers
         /// <summary>
         /// 리뷰를 삭제합니다.
         /// </summary>
-        /// <param name="id"> 리뷰 아이디 </param>
+        /// <param name="id"> 삭제할 리뷰 아이디 </param>
         /// <returns> 서버 응답 코드와 메시지 </returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<Review>> DeleteReview(int id)
