@@ -22,12 +22,6 @@
                 @Html.DisplayNameFor(model => model.StarPoint)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ViewingDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MovieTheater)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.InsertDate)
             </th>
             <th>
@@ -49,12 +43,6 @@
                 @Html.DisplayFor(modelItem => item.StarPoint)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ViewingDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MovieTheater.BasicOrganization)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.InsertDate)
             </td>
             <td>
@@ -69,3 +57,6 @@
 }
     </tbody>
 </table>
+<div>
+    @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page = page }))
+</div>

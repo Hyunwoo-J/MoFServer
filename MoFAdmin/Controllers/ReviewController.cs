@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MoFModel.Contexts;
 using MoFModel.Entities;
+using X.PagedList;
 
 namespace MoF.Controllers
 {
@@ -22,13 +23,13 @@ namespace MoF.Controllers
         }
 
         // GET: Review
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
             var applicationDbContext = _context.Review
                 .Include(r => r.MovieTheater)
                 .OrderBy(r => r.ReviewId);
 
-            return View(await applicationDbContext.ToListAsync());
+            return View(await applicationDbContext.ToPagedListAsync(page ?? 1, 15));
         }
 
         // GET: Review/Details/5
