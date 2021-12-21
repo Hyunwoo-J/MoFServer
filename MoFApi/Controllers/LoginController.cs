@@ -57,6 +57,14 @@ namespace MoFApi.Controllers
                             Token = token
                         });
                     }
+                    else
+                    {
+                        return Ok(new CommonResponse
+                        {
+                            Code = ResultCode.Fail,
+                            Message = "Token not found"
+                        });
+                    }
                 }
             }
 
@@ -94,6 +102,14 @@ namespace MoFApi.Controllers
                             Token = token
                         });
                     }
+                    else
+                    {
+                        return Ok(new CommonResponse
+                        {
+                            Code = ResultCode.Fail,
+                            Message = "Token not found"
+                        });
+                    }
                 }
             }
 
@@ -113,13 +129,25 @@ namespace MoFApi.Controllers
 
                 if (addResult.Succeeded)
                 {
-                    return Ok(new LoginResponse
+                    var token = GetApiToken(newUser);
+                    if (!token.Contains("fail"))
                     {
-                        Code = ResultCode.Ok,
-                        Message = "Join & Login success",
-                        UserId = newUser.Id,
-                        Token = GetApiToken(newUser)
-                    });
+                        return Ok(new LoginResponse
+                        {
+                            Code = ResultCode.Ok,
+                            Message = "Join & Login success",
+                            UserId = newUser.Id,
+                            Token = token
+                        });
+                    }
+                    else
+                    {
+                        return Ok(new CommonResponse
+                        {
+                            Code = ResultCode.Fail,
+                            Message = "Token not found"
+                        });
+                    }
                 }
             }
 

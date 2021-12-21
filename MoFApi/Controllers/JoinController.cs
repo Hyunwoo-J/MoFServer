@@ -43,13 +43,25 @@ namespace MoFApi.Controllers
             var result = await _userManager.CreateAsync(user, data.Password);
             if (result.Succeeded)
             {
-                return Ok(new JoinResponse
+                var token = GetApiToken(user);
+                if (!token.Contains("fail"))
                 {
-                    Code = ResultCode.Ok,
-                    Message = "Join success",
-                    UserId = user.Id,
-                    Token = GetApiToken(user)
-                });
+                    return Ok(new JoinResponse
+                    {
+                        Code = ResultCode.Ok,
+                        Message = "Join success",
+                        UserId = user.Id,
+                        Token = token
+                    });
+                }
+                else
+                {
+                    return Ok(new CommonResponse
+                    {
+                        Code = ResultCode.Fail,
+                        Message = "Token not found"
+                    });
+                }
             }
 
             return Ok(new JoinResponse

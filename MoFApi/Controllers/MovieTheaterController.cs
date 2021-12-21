@@ -52,7 +52,11 @@ namespace MoFApi.Controllers
 
             if (movieTheater == null)
             {
-                return NotFound();
+                return Ok(new CommonResponse
+                {
+                    Code = ResultCode.Fail,
+                    Message = "Movie theater not found"
+                });
             }
 
             return movieTheater;
@@ -69,7 +73,11 @@ namespace MoFApi.Controllers
         {
             if (id != movieTheater.MovieTheaterId)
             {
-                return BadRequest();
+                return Ok(new CommonResponse
+                {
+                    Code = ResultCode.Fail,
+                    Message = "Movie theater id not exists"
+                });
             }
             
             _context.Entry(movieTheater).State = EntityState.Modified;
@@ -82,7 +90,11 @@ namespace MoFApi.Controllers
             {
                 if (!MovieTheaterExists(id))
                 {
-                    return NotFound();
+                    return Ok(new CommonResponse
+                    {
+                        Code = ResultCode.Fail,
+                        Message = "Movie theater id not exists"
+                    });
                 }
                 else
                 {
@@ -90,7 +102,11 @@ namespace MoFApi.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(new CommonResponse
+            {
+                Code = ResultCode.Fail,
+                Message = "No content"
+            });
         }
 
         /// <summary>
@@ -135,7 +151,11 @@ namespace MoFApi.Controllers
             var movieTheater = await _context.MovieTheater.FindAsync(id);
             if (movieTheater == null)
             {
-                return NotFound();
+                return Ok(new CommonResponse
+                {
+                    Code = ResultCode.Fail,
+                    Message = "Movie theater not found"
+                });
             }
 
             _context.MovieTheater.Remove(movieTheater);

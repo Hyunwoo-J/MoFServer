@@ -133,8 +133,8 @@ namespace MoFApi.Controllers
             {
                 return Ok(new CommonResponse
                 {
-                    Code = ResultCode.ReviewNotExists,
-                    Message = "Not exist"
+                    Code = ResultCode.Fail,
+                    Message = "Review id not exist"
                 });
             }
 
